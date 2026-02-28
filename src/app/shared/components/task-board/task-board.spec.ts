@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaskBoard } from './task-board';
 import { Tasks } from '../../../features/services/tasks/tasks';
 import { BehaviorSubject, of } from 'rxjs';
+import { Translate } from '../../../core/services/translate/translate';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('TaskBoard Component', () => {
   let component: TaskBoard;
   let fixture: ComponentFixture<TaskBoard>;
-
-  /* ================= MOCK TASK SERVICE ================= */
 
   const tasksServiceMock = {
     searchText: new BehaviorSubject<string>('test'),
@@ -25,15 +25,22 @@ describe('TaskBoard Component', () => {
       title: 'Task 2',
     },
   ];
+  const langSubject = new BehaviorSubject<string>('en');
+
+  const mockTranslate = {
+    pLang: langSubject.asObservable(),
+    setLanguage: jasmine.createSpy('setLanguage'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TaskBoard],
+      imports: [TaskBoard, TranslateModule.forRoot()],
       providers: [
         {
           provide: Tasks,
           useValue: tasksServiceMock,
         },
+        { provide: Translate, useValue: mockTranslate },
       ],
     }).compileComponents();
 

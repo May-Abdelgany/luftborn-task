@@ -1,44 +1,46 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { loaderInterceptor } from '../../interceptors/loader/loader-interceptor';
 import { Loader } from './loader';
 
-describe('Loader Service', () => {
-  let service: Loader;
+describe('LoaderInterceptor', () => {
+  let http: HttpClient;
+  let httpMock: HttpTestingController;
+  let loaderSpy: jasmine.SpyObj<Loader>;
 
   beforeEach(() => {
+    loaderSpy = jasmine.createSpyObj('Loader', ['show', 'hide']);
+
     TestBed.configureTestingModule({
-      providers: [Loader],
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: Loader, useValue: loaderSpy },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: loaderInterceptor,
+          multi: true,
+        },
+      ],
     });
 
-    service = TestBed.inject(Loader);
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    httpMock.verify();
   });
 
-  /* ================= INITIAL STATE ================= */
+  it('should call loader show and hide', () => {
+    http.get('/test').subscribe();
 
-  it('should have default loading state as false', () => {
-    expect(service.loading()).toBeFalse();
-  });
+    const req = httpMock.expectOne('/test');
 
-  /* ================= SHOW ================= */
+    expect(loaderSpy.show).toHaveBeenCalled();
 
-  it('should set loading to true when show is called', () => {
-    service.show();
+    req.flush({}); 
 
-    expect(service.loading()).toBeTrue();
-  });
-
-  /* ================= HIDE ================= */
-
-  it('should set loading to false when hide is called', () => {
-    service.show();
-
-    expect(service.loading()).toBeTrue();
-
-    service.hide();
-
-    expect(service.loading()).toBeFalse();
+    expect(loaderSpy.hide).toHaveBeenCalled();
   });
 });

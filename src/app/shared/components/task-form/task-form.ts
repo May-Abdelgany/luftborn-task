@@ -78,34 +78,43 @@ export class TaskForm {
 
   submit() {
     if (this.taskForm.invalid) return;
+
     const assign = this.assigne().find((user) => user.id == this.taskForm.value.assignee) || null;
 
     this.taskForm.value.assignee = assign;
-    const task = {
-      id: crypto.randomUUID(),
+
+    const baseTask = {
       ...this.taskForm.value,
       tags: this.taskForm.value.tags
         ? this.taskForm.value.tags.includes(',')
           ? this.taskForm.value.tags.split(',').map((t: string) => t.trim())
           : this.taskForm.value.tags
         : [],
-
       updatedAt: new Date().toISOString(),
     };
+
     if (this.formType() == 'add') {
+      const task = {
+        id: crypto.randomUUID(),
+        ...baseTask,
+      };
+
       this.tasks().push(task);
+
       localStorage.setItem('tasks', JSON.stringify(this.tasks()));
       this.Toaster.showSuccess('Add Task', 'Success');
     } else {
-      this.updatedTask.set(task);
-      this.tasks.set(
-        this.tasks().map((t) => (t.id === this.taskId() ? { ...t, ...this.updatedTask() } : t)),
-      );
-      console.log(this.tasks());
+      const task = {
+        id: this.taskId(), // ✅ نحافظ على نفس الـ id
+        ...baseTask,
+      };
+
+      this.tasks.set(this.tasks().map((t) => (t.id === this.taskId() ? task : t)));
 
       localStorage.setItem('tasks', JSON.stringify(this.tasks()));
       this.Toaster.showSuccess('Update Task', 'Success');
     }
+
     this.taskForm.reset({
       status: 'todo',
       priority: 'medium',

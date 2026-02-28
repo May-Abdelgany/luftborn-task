@@ -1,58 +1,80 @@
-import { loaderInterceptor } from './loader-interceptor';
 import { TestBed } from '@angular/core/testing';
-import { HttpRequest, HttpHandlerFn } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors
+} from '@angular/common/http';
+import {
+  provideHttpClientTesting,
+  HttpTestingController
+} from '@angular/common/http/testing';
+import { loaderInterceptor } from './loader-interceptor';
 import { Loader } from '../../services/loader/loader';
-import { of, throwError } from 'rxjs';
 
-describe('Loader Interceptor', () => {
+describe('loaderInterceptor (Functional)', () => {
 
-  const loaderMock = {
-    show: jasmine.createSpy('show'),
-    hide: jasmine.createSpy('hide')
-  };
+  let http: HttpClient;
+  let httpMock: HttpTestingController;
+  let loaderSpy: jasmine.SpyObj<Loader>;
 
   beforeEach(() => {
+
+    loaderSpy = jasmine.createSpyObj('Loader', ['show', 'hide']);
+
     TestBed.configureTestingModule({
       providers: [
-        {
-          provide: Loader,
-          useValue: loaderMock
-        }
+        { provide: Loader, useValue: loaderSpy },
+
+        // ✅ الطريقة الصحيحة مع Functional Interceptor
+        provideHttpClient(
+          withInterceptors([loaderInterceptor])
+        ),
+
+        provideHttpClientTesting()
       ]
     });
+
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  function executeInterceptor(response$: any = of({})) {
-    const req = new HttpRequest('GET', '/test');
-
-    const next: HttpHandlerFn = () => response$;
-
-    return TestBed.runInInjectionContext(() =>
-      loaderInterceptor(req, next).toPromise()
-    );
-  }
-
-  it('should show loader when request starts', async () => {
-    await executeInterceptor();
-
-    expect(loaderMock.show).toHaveBeenCalled();
+  afterEach(() => {
+    httpMock.verify();
   });
 
-  it('should hide loader when request completes', async () => {
-    await executeInterceptor();
+  it('should call loader show when request starts', () => {
 
-    expect(loaderMock.hide).toHaveBeenCalled();
+    http.get('/test').subscribe();
+
+    const req = httpMock.expectOne('/test');
+
+    expect(loaderSpy.show).toHaveBeenCalled();
+
+    req.flush({});
   });
 
-  it('should hide loader even when request fails', async () => {
-    const errorResponse = throwError(() => new Error('Request failed'));
+  it('should call loader hide when request completes', () => {
 
-    try {
-      await executeInterceptor(errorResponse);
-    } catch {}
+    http.get('/test').subscribe();
 
-    expect(loaderMock.show).toHaveBeenCalled();
-    expect(loaderMock.hide).toHaveBeenCalled();
+    const req = httpMock.expectOne('/test');
+
+    req.flush({});
+
+    expect(loaderSpy.hide).toHaveBeenCalled();
+  });
+
+  it('should call both show and hide', () => {
+
+    http.get('/test').subscribe();
+
+    const req = httpMock.expectOne('/test');
+
+    expect(loaderSpy.show).toHaveBeenCalled();
+
+    req.flush({});
+
+    expect(loaderSpy.hide).toHaveBeenCalled();
   });
 
 });

@@ -1,77 +1,75 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavTabs } from './nav-tabs';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Api } from '../../../core/services/api/api';
-import { of } from 'rxjs';
+import { Translate } from '../../../core/services/translate/translate';
+import { BehaviorSubject, of } from 'rxjs';
 
-describe('NavTabs Component', () => {
+describe('NavTabs', () => {
   let component: NavTabs;
   let fixture: ComponentFixture<NavTabs>;
 
-  /* ================= MOCK API SERVICE ================= */
+  // 1. Create a Subject to trigger the .subscribe() inside ngOnInit
+  const langSubject = new BehaviorSubject<string>('en');
 
-  const mockUsers = [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Alex' },
-  ];
+  // 2. Mock Api to return a value immediately
+  const mockApi = {
+    get: jasmine.createSpy('get').and.returnValue(of([{ id: 1, name: 'Test User' }]))
+  };
 
-  const apiMock = {
-    get: jasmine.createSpy('get').and.returnValue(of(mockUsers)),
+  const mockTranslate = {
+    pLang: langSubject.asObservable(),
+    setLanguage: jasmine.createSpy('setLanguage')
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavTabs],
+      imports: [NavTabs, TranslateModule.forRoot()],
       providers: [
-        {
-          provide: Api,
-          useValue: apiMock,
-        },
-      ],
+        provideRouter([]),
+        { provide: Api, useValue: mockApi },
+        { provide: Translate, useValue: mockTranslate }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavTabs);
     component = fixture.componentInstance;
 
+    // Trigger ngOnInit(), getUsers(), and all subscriptions
     fixture.detectChanges();
   });
 
-  /* ================= COMPONENT CREATION ================= */
-
-  it('should create component', () => {
-    expect(component).toBeTruthy();
+  // --- NEW: Cover the signal initialization and arrays ---
+  it('should initialize with correct default signals (Covers tabs and priorities lines)', () => {
+    expect(component.tabs()).toBeDefined();
+    expect(component.tabs().length).toBe(4);
+    expect(component.priorities()).toBeDefined();
+    expect(component.priorities().length).toBe(4);
+    expect(component.activeTab()).toBe('All');
   });
 
-  /* ================= NG ON INIT ================= */
+  it('should cover ngOnInit and getUsers subscriptions', () => {
+    expect(mockApi.get).toHaveBeenCalledWith('assignee.json');
+    expect(component.assigne().length).toBeGreaterThan(0);
 
-  it('should load users on init', fakeAsync(() => {
-    spyOn(component, 'getUsers');
+    // Trigger the pLang subscription logic
+    langSubject.next('ar');
+    expect(component.currentLang()).toBe('ar');
+  });
 
-    component.ngOnInit();
-
-    expect(component.getUsers).toHaveBeenCalled();
-  }));
-
-  /* ================= TAB SELECTION ================= */
-
-  it('should change active tab and emit event', () => {
+  it('should cover setActiveTab and its emit', () => {
     spyOn(component.selectType, 'emit');
-
     component.setActiveTab('Done');
 
     expect(component.activeTab()).toBe('Done');
     expect(component.selectType.emit).toHaveBeenCalledWith('Done');
   });
 
-  /* ================= PRIORITY CHANGE ================= */
-
-  it('should change priority', () => {
-    const event = {
-      target: {
-        value: 'High',
-      },
-    } as any;
-
+  it('should cover setPriority and its emit', () => {
     spyOn(component.selectPriorety, 'emit');
+    // Using a proper mock for the Event target
+    const event = { target: { value: 'High' } } as unknown as Event;
 
     component.setPriority(event);
 
@@ -79,46 +77,40 @@ describe('NavTabs Component', () => {
     expect(component.selectPriorety.emit).toHaveBeenCalledWith('High');
   });
 
-  /* ================= STATUS CHANGE ================= */
-
-  it('should change status', () => {
-    const event = {
-      target: {
-        value: 'Done',
-      },
-    } as any;
-
+  it('should cover setStatus and its emit', () => {
     spyOn(component.selectStatus, 'emit');
+    const event = { target: { value: 'In Progress' } } as unknown as Event;
 
     component.setStatus(event);
 
-    expect(component.selectedStatus()).toBe('Done');
-    expect(component.selectStatus.emit).toHaveBeenCalledWith('Done');
+    expect(component.selectedStatus()).toBe('In Progress');
+    expect(component.selectStatus.emit).toHaveBeenCalledWith('In Progress');
   });
 
-  /* ================= USER CHANGE ================= */
-
-  it('should change user', () => {
-    const event = {
-      target: {
-        value: '1',
-      },
-    } as any;
-
+  it('should cover setUser and its emit', () => {
     spyOn(component.selectUser, 'emit');
+    const event = { target: { value: 'User123' } } as unknown as Event;
 
     component.setUser(event);
 
-    expect(component.selectedUser()).toBe('1');
-    expect(component.selectUser.emit).toHaveBeenCalledWith('1');
+    expect(component.selectedUser()).toBe('User123');
+    expect(component.selectUser.emit).toHaveBeenCalledWith('User123');
   });
 
-  /* ================= API USERS ================= */
+  it('should cover setLang', () => {
+    component.setLang('fr');
+    expect(mockTranslate.setLanguage).toHaveBeenCalledWith('fr');
+  });
 
-  it('should load users from API', () => {
-    component.getUsers();
+  // --- NEW: Cover takeUntilDestroyed(this.destroyRef) ---
+  it('should clean up subscriptions when destroyed (Covers destroyRef line)', () => {
+    fixture.destroy(); // This triggers the DestroyRef
 
-    expect(apiMock.get).toHaveBeenCalledWith('assignee.json');
-    expect(component.assigne().length).toBeGreaterThan(0);
+    // We push a value to the subject after destruction
+    langSubject.next('es');
+
+    // The currentLang should NOT be 'es' because the subscription should be dead
+    // (Though in a test, the most important thing is that calling destroy() didn't crash)
+    expect(component.currentLang()).not.toBe('es');
   });
 });
