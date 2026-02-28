@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row align-items-center w-90 bg-white rounded-2">
+    <!-- Tabs -->
+    <div class="col-lg-12 col-xl-6 mt-2">
+      @for (tab of tabs(); track $index) {
+        <button
+          class="btn me-2 mb-2"
+          [class]="{
+            button: activeTab() === tab.en,
+            'btn-outline': activeTab() !== tab.en,
+          }"
+          (click)="setActiveTab(tab.en)"
+        >
+          {{ currentLang() === 'en' ? tab.en : tab.ar }}
+        </button>
+      }
+    </div>
+
+    <!-- Priority Dropdown + New Task -->
+    <div class="col-lg-12 col-xl-6">
+      <div class="row p-2">
+        <div class="col-xxl-3 col-lg-4 col-md-6">
+          <select
+            class="form-select w-100 mt-2"
+            [value]="selectedPriority()"
+            (change)="setPriority($event)"
+          >
+            @for (priority of priorities(); track $index) {
+              <option [value]="priority.en">
+                {{ currentLang() === 'en' ? priority.en : priority.ar }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-md-6">
+          <select
+            class="form-select w-100 mt-2"
+            [value]="selectedStatus()"
+            (change)="setStatus($event)"
+          >
+            @for (tab of tabs(); track $index) {
+              <option [value]="tab.en">{{ currentLang() === 'en' ? tab.en : tab.ar }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-md-6">
+          <select
+            class="form-select w-100 mt-2"
+            [value]="selectedUser()"
+            (change)="setUser($event)"
+          >
+            <option [value]="'All'">{{ 'all' | translate }}</option>
+
+            @for (user of assigne(); track $index) {
+              <option [value]="user.id">{{ user.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-md-6">
+          <button type="button" class="btn button w-100 mt-2" routerLink="/add-task">
+            {{ 'newTask' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+{
+  "taskManager": "Task Manager",
+  "newTask": "+ new Task",
+  "all": "All",
+  "title": "Title *",
+  "description": "Description *",
+  "tags": "Tags (comma separated) *",
+  "status": "Status",
+  "priority": "Priority",
+  "dueDate": "Due Date",
+  "assign": "Assign",
+  "searchTagsPlaceholder": "Design, UI, Backend",
+
+  "todo": "To Do",
+  "inProgress": "In Progress",
+  "done": "Done",
+
+  "high": "High",
+  "medium": "Medium",
+  "low": "Low",
+
+  "titleError": "Title is required (min 5 chars)",
+  "descriptionError": "Description is required",
+  "tagsError": "Tags is required",
+
+  "createTask": "Create Task",
+  "updateTask": "Update Task",
+  "createNewTask": "Create New Task",
+  "update": "Update",
+  "delete": "Delete",
+  "deleteTask": "Delete Task",
+  "close": "Close",
+  "warning": "Warning!",
+  "deleteWarningMessage": "You are about to permanently delete this task. Once deleted, you will not be able to recover it.",
+  "confirmContinue": "Do you really want to continue?"
+}

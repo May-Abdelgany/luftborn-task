@@ -1,0 +1,15 @@
+.btn {
+  min-width: 90px;
+}
+.w-90{
+  width: 99%;
+  margin: auto;
+}
+@media (max-width: 768px) {
+  .btn {
+    flex: 1 1 auto;
+  }
+}
+.btn-outline {
+  border-color: var(--bg-primary);
+}

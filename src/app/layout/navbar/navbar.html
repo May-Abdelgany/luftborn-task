@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand fixed-top navbar-light bg-white px-3">
+  <!-- Left: Logo -->
+  <a class="navbar-brand d-flex align-items-center text-primary fw-bold" routerLink="/home">
+    <div
+      class="logo-box bg-primary text-white d-flex align-items-center justify-content-center me-2"
+    >
+      <img src="/task.png" alt="Logo" class="logo-img" />
+    </div>
+    {{ 'taskManager' | translate }}
+  </a>
+
+  <!-- Center: Search -->
+  <div class="flex-grow-1 d-flex justify-content-center">
+    <div
+      class="d-flex bg-white input-size rounded-4 border border-2 border-secondary align-items-center px-3"
+    >
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        class="form-control w-75 border-0"
+        [placeholder]="currentLang() === 'ar' ? 'ابحث عن المهام...' : 'Search tasks...'"
+        [value]="searchQuery()"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+  </div>
+
+  <!-- Right: Notifications + Profile -->
+  <div class="d-flex align-items-center">
+    <!-- Notifications -->
+    <div
+      class="me-2 cursor-pointer notification-icon d-flex align-items-center justify-content-center"
+    >
+      <img src="/alert.png" alt="Notifications" class="img-fluid" />
+    </div>
+
+    <!-- Profile -->
+    <div
+      class="profile-circle bg-primary text-white d-flex align-items-center justify-content-center"
+    >
+      {{ userInitials() }}
+    </div>
+  </div>
+</nav>

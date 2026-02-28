@@ -1,0 +1,45 @@
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('@angular-devkit/build-angular/plugins/karma')
+    ],
+
+    client: {
+      jasmine: {
+        random: false
+      },
+      clearContext: false
+    },
+
+    coverageReporter: {
+      dir: require('path').join(__dirname, './coverage'),
+      subdir: '.',
+      reporters: [{ type: 'html' }, { type: 'text-summary' }]
+    },
+
+    reporters: ['progress', 'kjhtml'],
+
+    browsers: ['ChromeHeadless'],
+
+    restartOnFileChange: true,
+
+    singleRun: false,
+
+    browserNoActivityTimeout: 60000,
+
+    captureTimeout: 120000,
+
+    concurrency: Infinity,
+
+    // ⭐ Important for modern Angular builds
+    angularCli: {
+      environment: 'dev'
+    }
+  });
+};

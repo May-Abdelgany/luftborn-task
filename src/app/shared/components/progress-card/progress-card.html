@@ -1,0 +1,18 @@
+<div class="card h-100 shadow-sm">
+  <div class="card-body">
+    <div class="d-flex align-items-center">
+      <p class="mt-2">{{ item().icon }}</p>
+      <h6 class="card-title ms-2 mt-1">{{ item().title }}</h6>
+    </div>
+    <h3>
+      {{ item().value }}
+    </h3>
+    <small [style.color]="item().color">
+      @if (item().change == '0') {
+        {{ item().changeLabel }}
+      } @else {
+        {{ item().change + '  ' + item().changeLabel }}
+      }
+    </small>
+  </div>
+</div>

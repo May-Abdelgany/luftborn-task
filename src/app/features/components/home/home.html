@@ -1,0 +1,25 @@
+<!-- Task Status Cards -->
+<div class="container-fluid mt-3">
+  <div class="row">
+    @for (item of statistics(); track item.id) {
+      <div class="col-12 col-lg-3 mb-3">
+        <app-progress-card [item]="item"></app-progress-card>
+      </div>
+    }
+  </div>
+</div>
+
+<!--nav and tabs-->
+<app-nav-tabs
+  (selectType)="getType($event)"
+  (selectPriorety)="getPriorety($event)"
+  (selectStatus)="getStatus($event)"
+  (selectUser)="getUser($event)"
+></app-nav-tabs>
+<!-- task board -->
+<app-task-board
+  [tasks]="filteredTasks()"
+  [type]="taskType()"
+  (deletedTask)="deleteTask($event)"
+  (statusChanged)="onStatusChanged($event)"
+></app-task-board>

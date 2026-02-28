@@ -1,0 +1,85 @@
+<form [formGroup]="taskForm" (ngSubmit)="submit()">
+  <!-- Title -->
+  <div class="form-group">
+    <label>{{ 'title' | translate }}</label>
+    <input type="text" formControlName="title" />
+    @if (form['title'].invalid && form['title'].touched) {
+      <small>{{ 'titleError' | translate }}</small>
+    }
+  </div>
+
+  <!-- Description -->
+  <div class="form-group">
+    <label>{{ 'description' | translate }}</label>
+    <textarea rows="3" formControlName="description"></textarea>
+    @if (form['description'].invalid && form['description'].touched) {
+      <small>{{ 'descriptionError' | translate }}</small>
+    }
+  </div>
+
+  <!-- Tags -->
+  <div class="form-group">
+    <label>{{ 'tags' | translate }}</label>
+    <input type="text" formControlName="tags" [placeholder]="'searchTagsPlaceholder' | translate" />
+    @if (form['tags'].invalid && form['tags'].touched) {
+      <small>{{ 'tagsError' | translate }}</small>
+    }
+  </div>
+
+  <!-- Status & Priority & Due Date -->
+  <div class="row">
+    <!-- Status -->
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label>{{ 'status' | translate }}</label>
+        <select formControlName="status">
+          <option value="todo">{{ 'todo' | translate }}</option>
+          <option value="in-progress">{{ 'inProgress' | translate }}</option>
+          <option value="done">{{ 'done' | translate }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Priority -->
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label>{{ 'priority' | translate }}</label>
+        <select formControlName="priority">
+          <option value="high">{{ 'high' | translate }}</option>
+          <option value="medium">{{ 'medium' | translate }}</option>
+          <option value="low">{{ 'low' | translate }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Due Date -->
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label>{{ 'dueDate' | translate }}</label>
+        <input type="date" formControlName="dueDate" />
+      </div>
+    </div>
+
+    <!-- Assign -->
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label>{{ 'assign' | translate }}</label>
+        <select formControlName="assignee">
+          @for (item of assigne(); track $index) {
+            <option [value]="item.id">{{ item.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button class="btn button" type="submit" [disabled]="taskForm.invalid">
+      @if (formType() == 'add') {
+        {{ 'createTask' | translate }}
+      } @else {
+        {{ 'updateTask' | translate }}
+      }
+    </button>
+  </div>
+</form>

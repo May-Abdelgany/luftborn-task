@@ -1,0 +1,18 @@
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-lg-6">
+      <h2 class="text-center">Priority Distribution</h2>
+
+      <div class="d-flex justify-content-center">
+        <canvas baseChart [type]="'pie'" [data]="priorityChartData"> </canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <h2 class="text-center">Status Distribution</h2>
+      <div class="d-flex justify-content-center">
+        <canvas baseChart [type]="'doughnut'" [data]="statusChartData"> </canvas>
+      </div>
+    </div>
+  </div>
+</div>

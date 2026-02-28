@@ -1,0 +1,33 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    @for (col of columns(); track col.value) {
+      @if (
+        col.label[currentLang()].toLowerCase() == type().toLowerCase() ||
+        type().toLowerCase() == 'all'
+      ) {
+        <div class="col-xl-4">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header">
+              {{ col.label[currentLang()] }}
+            </div>
+            <div
+              class="card-body"
+              (dragover)="onDragOver($event)"
+              (drop)="onDrop($event, col.label['en'])"
+            >
+              @for (
+                task of getTasksByColumn(col.label['en'])
+                  | search: searchText() : ['title', 'description'];
+                track task.title
+              ) {
+                <div draggable="true" (dragstart)="onDragStart($event, task.id)">
+                  <app-task-card [task]="task" (deletedTask)="deleteTask($event)"></app-task-card>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

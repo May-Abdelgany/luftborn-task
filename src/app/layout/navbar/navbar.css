@@ -1,0 +1,55 @@
+.logo-box,
+.profile-circle {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+.input-size {
+  width: 50%;
+}
+.logo-box {
+  border-radius: 4px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.profile-circle {
+  border-radius: 50%;
+  font-weight: bold;
+}
+.notification-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+}
+.notification-icon:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+  border-color: transparent;
+  box-shadow: unset;
+}
+@media screen and (max-width: 768px) {
+  .logo-box,
+  .profile-circle {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  .input-size {
+    width: 90%;
+  }
+  .profile-circle {
+    margin-top: 4px;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+  .notification-icon {
+    margin-top: 0.5rem;
+  }
+  .notification-icon img {
+    width: 1rem;
+  }
+}

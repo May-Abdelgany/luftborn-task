@@ -1,0 +1,11 @@
+.task-card {
+  padding: 24px;
+  border-radius: 12px;
+  margin: auto;
+}
+
+.form-title {
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 20px;
+}

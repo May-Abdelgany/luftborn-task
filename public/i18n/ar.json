@@ -1,0 +1,36 @@
+{
+  "taskManager": "مدير المهام",
+  "newTask": "+ مهمة جديده ",
+  "all": "الجميع",
+  "title": "العنوان *",
+  "description": "الوصف *",
+  "tags": "الوسوم (مفصولة بفاصلة) *",
+  "status": "الحالة",
+  "priority": "الأولوية",
+  "dueDate": "تاريخ الاستحقاق",
+  "assign": "تعيين",
+  "searchTagsPlaceholder": "تصميم، واجهة، باك إند",
+
+  "todo": "قيد التنفيذ",
+  "inProgress": "قيد العمل",
+  "done": "منتهي",
+
+  "high": "عالي",
+  "medium": "متوسط",
+  "low": "منخفض",
+
+  "titleError": "العنوان مطلوب (5 أحرف على الأقل)",
+  "descriptionError": "الوصف مطلوب",
+  "tagsError": "الوسوم مطلوبة",
+
+  "createTask": "إنشاء مهمة",
+  "updateTask": "تحديث المهمة",
+  "createNewTask": "إنشاء مهمة جديدة",
+  "update": "تعديل",
+  "delete": "حذف",
+  "deleteTask": "مسح المهمة",
+  "close": "إغلاق",
+  "warning": "تحذير!",
+  "deleteWarningMessage": "أنت على وشك حذف هذه المهمة نهائيًا. بعد الحذف لن تتمكن من استعادتها مرة أخرى.",
+  "confirmContinue": "هل تريد المتابعة بالفعل؟"
+}

@@ -1,0 +1,96 @@
+<div
+  class="task-card mb-3 rounded border border-1"
+  [class]="{
+    overdue: task().isOverdue,
+    complete: task().completedAt,
+    due: !task().isOverdue && !task().completedAt,
+  }"
+>
+  <div
+    class="p-3 rounded"
+    [ngClass]="{
+      ' border-start  border-danger  overdue-card': task().isOverdue,
+    }"
+  >
+    <div class="d-flex justify-content-between">
+      <span
+        class="badge"
+        [class]="{
+          'bg-danger': task().priority.toUpperCase() === 'HIGH',
+          'bg-warning': task().priority.toUpperCase() === 'MEDIUM',
+          'bg-success': task().priority.toUpperCase() === 'LOW',
+        }"
+      >
+        {{ task().priority }}
+      </span>
+      <div class="dropdown">
+        <div type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="pi pi-ellipsis-v cursor-pointer"></i>
+        </div>
+        <ul class="dropdown-menu">
+          <li>
+            <button class="dropdown-item" type="button" [routerLink]="['/update-task', task().id]">
+              <i class="pi pi-pencil px-2"></i>{{ 'update' | translate }}
+            </button>
+          </li>
+          <li>
+            <button
+              class="dropdown-item"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              <i class="pi pi-trash px-2"></i>{{ 'delete' | translate }}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h6 class="mt-2">{{ task().title }}</h6>
+    <p class="text-muted small">{{ task().description }}</p>
+
+    <div class="text-muted small">
+      @if (task().status.includes('Overdue')) {
+        <i class="pi pi-exclamation-triangle"></i>
+      } @else if (task().status.includes('Completed')) {
+        <i>✅</i>
+      } @else {
+        📅
+      }
+      <span>
+        {{ task().status }}
+      </span>
+    </div>
+    <div>
+      @for (tag of task().tags; track $index) {
+        <span class="text-muted px-3">{{ tag }}</span>
+      }
+    </div>
+    <hr />
+    <!-- Profile -->
+    <div class="d-flex align-items-center">
+      <div
+        class="profile-circle mt-1 bg-primary text-white d-flex align-items-center justify-content-center"
+      >
+        {{ task().assignee.avatar }}
+      </div>
+      <span class="fw-light ps-2"> @{{ task().assignee.name }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<app-modal
+  [id]="task().id"
+  [buttonName]="'delete' | translate"
+  (deletedTask)="deleteTask(task().id)"
+>
+  <div class="modal-body">
+    <p class="fw-semibold text-danger">⚠️ {{ 'warning' | translate }}</p>
+    <p>
+      {{ 'deleteWarningMessage' | translate }}
+    </p>
+    <p class="mb-0">{{ 'confirmContinue' | translate }}</p>
+  </div>
+</app-modal>

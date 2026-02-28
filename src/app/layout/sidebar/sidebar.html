@@ -1,0 +1,41 @@
+<div class="sidebar d-flex flex-column p-3 bg-white vh-100">
+  <!-- Navigation Items -->
+  @for (item of menuItems(); track item.label) {
+    <div
+      class="nav-item d-flex align-items-center mb-3 px-2 py-2 rounded"
+      routerLinkActive="active"
+      [routerLink]="item.routerLink"
+    >
+      <img [src]="item.image" alt="sidebar icon" class="mx-2" />
+      {{ currentLang() === 'ar' ? item.labelAr : item.label }}
+    </div>
+  }
+
+  <!-- Spacer -->
+  <div class="flex-grow-0"></div>
+
+  <!-- New Task Button -->
+  <button type="button" class="btn button w-100" routerLink="/add-task">
+    {{ 'newTask' | translate }}
+  </button>
+  <!-- Language Switch -->
+  <div class="d-flex h-100 align-items-end justify-content-center gap-2">
+    <button
+      class="btn btn-sm"
+      [class.btn-dark]="currentLang() === 'en'"
+      [class.btn-outline-dark]="currentLang() === 'ar'"
+      (click)="setLang('en')"
+    >
+      English
+    </button>
+
+    <button
+      class="btn btn-sm"
+      [class.btn-dark]="currentLang() === 'ar'"
+      [class.btn-outline-dark]="currentLang() === 'en'"
+      (click)="setLang('ar')"
+    >
+      العربية
+    </button>
+  </div>
+</div>
