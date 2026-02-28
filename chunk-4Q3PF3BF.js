@@ -1,0 +1,1 @@
+import{m as e}from"./chunk-HHXHNTMN.js";import{Q as s,V as c}from"./chunk-CDNDN3GD.js";var i=class t{toastr=c(e);showSuccess(o,r){this.toastr.success(o,r)}static \u0275fac=function(r){return new(r||t)};static \u0275prov=s({token:t,factory:t.\u0275fac,providedIn:"root"})};export{i as a};

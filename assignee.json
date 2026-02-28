@@ -1,0 +1,50 @@
+[
+  {
+    "id": "user-001",
+    "name": "John Doe",
+    "avatar": "JD",
+    "email": "john.doe@company.com"
+  },
+  {
+    "id": "user-002",
+    "name": "Sarah Smith",
+    "avatar": "SS",
+    "email": "sarah.smith@company.com"
+  },
+  {
+    "id": "user-003",
+    "name": "Ahmed Hassan",
+    "avatar": "AH",
+    "email": "ahmed.hassan@company.com"
+  },
+  {
+    "id": "user-004",
+    "name": "Emily Johnson",
+    "avatar": "EJ",
+    "email": "emily.johnson@company.com"
+  },
+  {
+    "id": "user-005",
+    "name": "Michael Brown",
+    "avatar": "MB",
+    "email": "michael.brown@company.com"
+  },
+  {
+    "id": "user-006",
+    "name": "Fatima Ali",
+    "avatar": "FA",
+    "email": "fatima.ali@company.com"
+  },
+  {
+    "id": "user-007",
+    "name": "David Wilson",
+    "avatar": "DW",
+    "email": "david.wilson@company.com"
+  },
+  {
+    "id": "user-008",
+    "name": "Mona Khaled",
+    "avatar": "MK",
+    "email": "mona.khaled@company.com"
+  }
+]
