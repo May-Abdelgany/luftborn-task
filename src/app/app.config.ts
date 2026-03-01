@@ -3,7 +3,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -27,6 +27,10 @@ export const appConfig: ApplicationConfig = {
       loader: provideTranslateHttpLoader({ prefix: './i18n/', suffix: '.json' }),
       fallbackLang: 'en',
     }),
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions(),
+      withHashLocation(),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled',
+      })),
   ],
 };
