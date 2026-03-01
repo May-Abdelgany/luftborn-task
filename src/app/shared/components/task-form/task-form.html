@@ -32,7 +32,7 @@
     <div class="col-lg-3 col-md-6">
       <div class="form-group">
         <label>{{ 'status' | translate }}</label>
-        <select formControlName="status">
+        <select  formControlName="status">
           <option value="todo">{{ 'todo' | translate }}</option>
           <option value="in-progress">{{ 'inProgress' | translate }}</option>
           <option value="done">{{ 'done' | translate }}</option>
@@ -44,7 +44,7 @@
     <div class="col-lg-3 col-md-6">
       <div class="form-group">
         <label>{{ 'priority' | translate }}</label>
-        <select formControlName="priority">
+        <select  formControlName="priority">
           <option value="high">{{ 'high' | translate }}</option>
           <option value="medium">{{ 'medium' | translate }}</option>
           <option value="low">{{ 'low' | translate }}</option>
@@ -64,7 +64,7 @@
     <div class="col-lg-3 col-md-6">
       <div class="form-group">
         <label>{{ 'assign' | translate }}</label>
-        <select formControlName="assignee">
+        <select  formControlName="assignee">
           @for (item of assigne(); track $index) {
             <option [value]="item.id">{{ item.name }}</option>
           }

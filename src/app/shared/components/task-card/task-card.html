@@ -24,9 +24,15 @@
         {{ task().priority }}
       </span>
       <div class="dropdown">
-        <div type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          type="button"
+          class="border-0 bg-transparent"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          aria-label="More options"
+        >
           <i class="pi pi-ellipsis-v cursor-pointer"></i>
-        </div>
+        </button>
         <ul class="dropdown-menu">
           <li>
             <button class="dropdown-item" type="button" [routerLink]="['/update-task', task().id]">
@@ -47,9 +53,13 @@
       </div>
     </div>
 
-    <h6 class="mt-2">{{ task().title }}</h6>
-    <p class="text-muted small">{{ task().description }}</p>
+    <p class="h6 mt-2 mb-1 fw-semibold">
+      {{ task().title }}
+    </p>
 
+    <p class="text-muted small mb-2">
+      {{ task().description }}
+    </p>
     <div class="text-muted small">
       @if (task().status.includes('Overdue')) {
         <i class="pi pi-exclamation-triangle"></i>
